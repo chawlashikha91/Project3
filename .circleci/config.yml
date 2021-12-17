@@ -88,9 +88,7 @@ jobs:
       - run:
           name: Back-end test
           working_directory: ./backend
-          command:  |
-                npm install
-                npm run test
+          command: npm run test
             
 #   scan-frontend:
 #     docker:
