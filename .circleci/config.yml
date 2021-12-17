@@ -76,6 +76,7 @@ jobs:
           name: Front-end test
           working_directory: ./frontend
           command:  |
+                npm init
                 npm install
                 npm run test
                 
@@ -89,9 +90,10 @@ jobs:
           name: Back-end test
           working_directory: ./backend
           command:  |
+                npm init
                 npm install
                 npm run test
-                
+
 #   scan-frontend:
 #     docker:
 #       # Docker image here
