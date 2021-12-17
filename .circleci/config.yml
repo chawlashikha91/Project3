@@ -90,7 +90,6 @@ jobs:
           working_directory: ./backend
           command:  |
                 npm install
-                npm run test
             
 #   scan-frontend:
 #     docker:
