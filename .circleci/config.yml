@@ -49,6 +49,27 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
 
+
+  test-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [test-frontend]
+      - run:
+          name: Install dependencies
+          working_directory: ./frontend
+          command: |
+                npm install
+      - run:    
+          name: Front-end test
+          working_directory: ./frontend
+          command:  |
+                npm run test
+      - slack/status
+
+
   build-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -66,23 +87,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-  test-frontend:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - restore_cache:
-          keys: [test-frontend]
-      - run:
-          name: Front-end test
-          working_directory: ./frontend
-          command:  |
-                npm init -y
-                sudo npm install -d
-                npm run test
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: test-frontend
-          
+
   test-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -96,6 +101,9 @@ jobs:
                 npm init -y
                 npm install -g express
                 npm run test
+      - save_cache:
+          paths: [backend/node_modules]
+          key: test-backend
 
 #   scan-frontend:
 #     docker:
