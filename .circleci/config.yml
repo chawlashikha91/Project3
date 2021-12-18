@@ -77,7 +77,7 @@ jobs:
           working_directory: ./frontend
           command:  |
                 npm init -y
-                npm install -g express
+                sdo npm install -g express
                 npm run test
       - save_cache:
           paths: [frontend/node_modules]
