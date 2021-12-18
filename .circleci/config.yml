@@ -76,8 +76,9 @@ jobs:
           name: Front-end test
           working_directory: ./frontend
           command:  |
-                npm init
-                npm install
+                npm --version
+                npm install express
+                npm init -y
                 npm run test
                 
   test-backend:
