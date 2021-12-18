@@ -76,13 +76,12 @@ jobs:
           name: Front-end test
           working_directory: ./frontend
           command:  |
-                npm run build
-                npm --version
-                npm install express
-                npm init -y
                 npm install
                 npm run test
-                
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: test-frontend
+          
   test-backend:
     docker:
       - image: circleci/node:13.8.0
