@@ -123,6 +123,11 @@ jobs:
       - restore_cache:
           keys: [scan-frontend]
       - run:
+          name: Install dependencies
+          working_directory: ./frontend
+          command:  |
+                npm install
+      - run:
           name: Check Frontend against security vulnerabilities
           working_directory: ./frontend
           command:  npm audit --audit-level=critical
@@ -134,6 +139,11 @@ jobs:
       -   checkout
       - restore_cache:
           keys: [scan-backend]
+      - run:
+          name: Install dependencies
+          working_directory: ./backend
+          command:  |
+                npm install
       - run:
           name: Check Backend against security vulnerabilities
           working_directory: ./backend
