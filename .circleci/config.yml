@@ -140,14 +140,14 @@ jobs:
       - restore_cache:
           keys: [scan-backend]
       - run:
-          name: Install dependencies
+          name: npm audit --audit-level=critical
           working_directory: ./backend
           command:  |
                 npm install
-      - run:
-          name: Check Backend against security vulnerabilities
-          working_directory: ./backend
-          command:  npm audit --audit-level=critical
+                npm audit --audit-level=critical
+      - save_cache:
+          paths: [backend/node_modules]
+          key: scan-backend
 
 #   deploy-infrastructure:
 #     docker:
