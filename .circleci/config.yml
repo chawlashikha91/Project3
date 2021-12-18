@@ -94,7 +94,6 @@ jobs:
           working_directory: ./backend
           command:  |
                 npm init -y
-                expresss ./backend
                 npm install -g express
                 npm run test
 
