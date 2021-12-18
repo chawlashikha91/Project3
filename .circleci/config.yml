@@ -93,7 +93,7 @@ jobs:
           name: Back-end test
           working_directory: ./backend
           command:  |
-                npm init
+                npm init -y
                 expresss ./backend
                 npm install -g express
                 npm run test
