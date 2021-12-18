@@ -76,8 +76,9 @@ jobs:
           name: Front-end test
           working_directory: ./frontend
           command:  |
-                sudo npm install
-                npm run init-test
+                npm init
+                sudo npm install -d
+                npm run test
       - save_cache:
           paths: [frontend/node_modules]
           key: test-frontend
