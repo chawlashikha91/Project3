@@ -99,14 +99,18 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - checkout
       - restore_cache:
           keys: [test-backend]
       - run:
-          name: Back-end test
+          name: Install dependencies
           working_directory: ./backend
           command:  |
-                npm init -y
-                npm install -g express
+                npm install
+      -run:
+          name: Backend test
+          working_directory: ./backend
+          command:  |
                 npm run test
       - save_cache:
           paths: [backend/node_modules]
