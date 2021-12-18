@@ -58,23 +58,22 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - attach_workspace:
-          at: .
+      -   checkout
+      - restore_cache:
+          keys: [test-frontend]
       - run:
-          name: Install junit coverage reporter
+          name: Install dependencies
           working_directory: ./frontend
-          command: npm install --save-dev jest-junit
+          command:  |
+                npm install
       - run:
-          name: Run tests with JUnit as reporter
+          name: Frontend test
           working_directory: ./frontend
-          command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit && pwd && ls -la /tmp
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./test_results
-      - store_test_results:
-          path: ./frontend/test_results
-      - store_artifacts:
-          path: ./frontend/test_results
+          command:  |
+                npm run test
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: test-frontend
 
 
   build-backend:
