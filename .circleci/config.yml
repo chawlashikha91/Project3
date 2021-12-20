@@ -230,11 +230,15 @@ jobs:
           fingerprints: ["2a:55:a0:47:be:47:46:f9:cb:9c:a3:03:6e:33:9e:3b"]
       # - attach_workspace:
       #     at: .
+      
+      - run:
+          name: Install Tar and gzip
+          command: yum install -y tar gzip
       - run:
           name: Install dependencies
-          working_directory: ./.circleci/ansible
+          # working_directory: ./.circleci/ansible
           command: |
-            # apk add --update ansible
+            apk add --update ansible
             ansible --version
       - run:
           name: Configure server
