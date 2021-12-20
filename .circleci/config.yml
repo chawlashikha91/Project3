@@ -172,7 +172,7 @@ jobs:
       -  checkout
       - run:
           name: Install Dependencies
-          command: yum isntall -y tar gzip
+          command: yum install -y tar gzip
       - run:
           name: Ensure back-end infrastructure exists
           working_directory: ./.circleci/files
