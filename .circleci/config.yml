@@ -37,24 +37,27 @@ commands:
               TERM: xterm-256color
           when: << parameters.when >>
 
-#   revert-migrations:
-#     description: Revert the last migration if successfully run in the current workflow.
-#     parameters:
-#       # Add parameter here     
-#     steps:
-#       - run:
-#           name: Revert migrations
-#           # Add when this will run
-#           command: |
-#             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-#             SUCCESS = 1
-#             if(( $SUCCESS==1 )); 
-#             then
-#             #  cd ~/project/backend
-#             #  npm install
-#             #  Add revert code here. You can find this in the Getting Started section.
-#               exit 1
-#             fi
+  revert_migrations:
+    description: Revert the last migration if successfully run in the current workflow.
+    parameters:
+      when:
+        type: string
+      id:
+        type: string
+    steps:
+      - run:
+          name: Revert migrations
+          working_directory: ./backend
+          command: |
+            SUCCESS=$(curl -H "token: 2a9e15d6-b9fa-4b1f-a5dc-e3b9643a9b63" --request GET https://api.memstash.io/values/DB_MIGRATION_<< parameters.id >>)
+            echo $SUCCESS
+            if [[ "$SUCCESS" == "success" ]]
+            then
+              pwd
+              ls -la
+              npm run migrations:revert
+            fi
+          when: << parameters.when >>
 
 orbs:
   slack: circleci/slack@3.4.2  # for slack integration to https://udapeople.slack.com; reference: https://circleci.com/blog/continuous-integration-slack-twilio/
@@ -319,7 +322,7 @@ jobs:
           root: .
           paths:
             - frontend/dist
-      - destroy_environment:
+      - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
       - revert_migrations:
@@ -349,7 +352,7 @@ jobs:
           command: |
             cat inventory
             ansible-playbook -i inventory deploy-server.yaml -vv
-      - destroy_environment:
+      - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
       - revert_migrations:
