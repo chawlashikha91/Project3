@@ -266,8 +266,7 @@ jobs:
           name: Install NPM
           working_directory: ./backend
           command:  |
-                npm install
-                
+                npm install   
       - run:
           name: Run migrations
           working_directory: ./backend
