@@ -278,7 +278,7 @@ jobs:
           command:  |
                 export TYPEORM_HOST=ec2-15-207-18-185.ap-south-1.compute.amazonaws.com
                 echo $TYPEORM_HOST
-                npm run migrations > migrations_dump.txt
+                npm run migrations > migration_status
       - run:
           name: Send migration results to memstash
           working_directory: ./backend
