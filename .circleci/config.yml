@@ -38,7 +38,7 @@ commands:
           when: << parameters.when >>
 
 
-  revert_migrations:
+  revert-migrations:
     description: Revert the last migration if it didnt successfully run in the current workflow.
     parameters:
       when:
