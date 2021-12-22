@@ -317,30 +317,22 @@ jobs:
             sudo ./aws/install
       - run:
           name: Rebuild frontend with backend API Url
-          working_directory: ./frontend
           command: |
-            export API_URL=http://3.85.135.53:3030
-            echo $API_URL
-            echo API_URL=http://3.85.135.53:3030 >>  frontend/.env
-            cat frontend/.env
-            npm run build
-
+            BACKEND_GET_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-f4d6334" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+            export API_URL="http://${BACKEND_GET_IP}:3030"
+            echo "${API_URL}"
       - run:
-          name: Deploy frontend objects to S3
-          working_directory: ./frontend
+          name: Deploy frontend objects
           command: |
-            aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
-      - persist_to_workspace:
-          root: .
-          paths:
-            - frontend/dist
-      - destroy-environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-          when: on_fail
-      - revert-migrations:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-          when: on_fail
-
+            cd frontend
+            npm i
+            npm run build   
+            cd dist
+            aws s3 cp . s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            echo "Done"
                     
   deploy-backend:
     executor: python
@@ -354,22 +346,31 @@ jobs:
           name: Install dependencies
           working_directory: /tmp
           command: |
-            apk add --update ansible curl rsync openssh nodejs npm
-            ansible --version
+            apk add --update curl nodejs npm ansible zip
             pip install awscli
-            aws --version
       - run:
-          name: Deploy backend
-          working_directory: ./.circleci/ansible
+          name: Build backend
           command: |
-            cat inventory
-            ansible-playbook -i inventory deploy-server.yml -vv
-      - destroy-environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-          when: on_fail
-      - revert-migrations:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-          when: on_fail
+            cd backend
+            npm i
+            npm audit fix
+            npm run build
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend/dist
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Deploy to EC2
+          command:
+            cd backend/dist
+            cp ../package.json .
+            zip -rq dist.zip *
+            mkdir -p .circleci/.ansible/roles/deploy/files/
+            mv dist.zip .circleci/.ansible/roles/deploy/files/
+            ansible-playbook -i inventory.txt .circleci/.ansible/deploy-backend.yml
+            echo "Done"  
 
 #   smoke-test:
 #     docker:
@@ -432,29 +433,29 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [main]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #     filters:
+      #       branches:
+      #         only: [main]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      - deploy-frontend
+          # requires: [run-migrations]
+      - deploy-backend
+          # requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
