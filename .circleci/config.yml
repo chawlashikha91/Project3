@@ -331,7 +331,7 @@ jobs:
             npm i
             npm run build   
             cd dist
-            aws s3 cp . s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp . s3://udapeople-e243a09 --recursive
             echo "Done"
                     
   deploy-backend:
