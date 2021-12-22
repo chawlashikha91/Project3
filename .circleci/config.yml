@@ -39,7 +39,7 @@ commands:
 
 
   revert_migrations:
-    description: Revert the last migration if successfully run in the current workflow.
+    description: Revert the last migration if it didnt successfully run in the current workflow.
     parameters:
       when:
         type: string
@@ -50,9 +50,9 @@ commands:
           name: Revert migrations
           working_directory: ./backend
           command: |
-            SUCCESS=$(curl  --request GET https://kvdb.io/NqK6G9tq8Jq7kMdMXacYZd/DB_MIGRATION_<< parameters.id >>)
-            echo $SUCCESS
-            if [[ "$SUCCESS" == "success" ]]
+            FAILURE=$(curl  --request GET https://kvdb.io/NqK6G9tq8Jq7kMdMXacYZd/DB_MIGRATION_<< parameters.id >>)
+            echo $FAILURE
+            if [[ "$FAILURE" == "failure" ]]
             then
               pwd
               ls -la
