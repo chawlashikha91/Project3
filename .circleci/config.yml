@@ -252,6 +252,7 @@ jobs:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
 
+
   run-migrations:
     executor: node
     steps:
@@ -275,6 +276,8 @@ jobs:
           name: Run migrations
           working_directory: ./backend
           command:  |
+                export TYPEORM_HOST=ec2-15-207-18-185.ap-south-1.compute.amazonaws.com
+                echo $TYPEORM_HOST
                 npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to memstash
