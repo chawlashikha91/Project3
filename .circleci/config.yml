@@ -50,7 +50,7 @@ commands:
           name: Revert migrations
           working_directory: ./backend
           command: |
-            FAILURE=$(curl  --request GET https://kvdb.io/NqK6G9tq8Jq7kMdMXacYZd/DB_MIGRATION_<< parameters.id >>)
+            FAILURE=$(curl -k --request GET https://kvdb.io/NqK6G9tq8Jq7kMdMXacYZd/DB_MIGRATION_<< parameters.id >>)
             echo $FAILURE
             if [[ "$FAILURE" == "failure" ]]
             then
@@ -295,7 +295,7 @@ jobs:
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
-      - revert_migrations:
+      - revert-migrations:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
 
 
@@ -333,7 +333,7 @@ jobs:
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
-      - revert_migrations:
+      - revert-migrations:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
 
