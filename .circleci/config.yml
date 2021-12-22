@@ -56,6 +56,8 @@ commands:
             then
               pwd
               ls -la
+              export TYPEORM_HOST=ec2-15-207-18-185.ap-south-1.compute.amazonaws.com
+              echo $TYPEORM_HOST
               npm run migrations:revert
             fi
           when: << parameters.when >>
