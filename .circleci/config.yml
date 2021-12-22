@@ -283,7 +283,7 @@ jobs:
           name: Send migration results to memstash
           working_directory: ./backend
           command: |
-            if grep -q "has been executed successfully" migration_status
+            if grep -q "has been executed successfully" migrations_dump.txt
             then
               echo "DB migration was successful, will update memstash..."
               curl  --data "success" https://kvdb.io/NqK6G9tq8Jq7kMdMXacYZd/status/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7}
