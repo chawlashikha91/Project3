@@ -16,7 +16,7 @@
   - name: Unarchive the zip
     ansible.builtin.unarchive:
       src: dist.zip
-      dest: dist
+      dest: /home/ubuntu
       remote_src: no
     
   - name: unarchive  
@@ -51,10 +51,11 @@
     shell: | 
       export TYPEORM_CONNECTION=postgres
       export TYPEORM_ENTITIES=./modules/domain/**/*.entity.js
-      export TYPEORM_HOST=ec2-23-233-68-53.ap-south-1.compute.amazonaws.com
+      export TYPEORM_HOST=ec2-13-233-68-53.ap-south-1.compute.amazonaws.com
       export TYPEORM_PORT=5432
       export TYPEORM_USERNAME=glee
       export TYPEORM_PASSWORD=glee
       export TYPEORM_DATABASE=glee
+      cd dist
       pm2 start main.js
     ignore_errors: true
