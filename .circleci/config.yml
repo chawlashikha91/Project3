@@ -360,7 +360,8 @@ jobs:
             mkdir -p .circleci/ansible/roles/deploy/files/
             mv dist.zip .circleci/ansible/roles/deploy/files/
             pwd
-            echo 54.145.133.39 > inventory.txt
+            echo [web] > inventory.txt
+            echo 54.145.133.39 >> inventory.txt
             ansible-playbook -i inventory.txt ../.circleci/ansible/deploy-backend.yml
             echo "Done"  
 
