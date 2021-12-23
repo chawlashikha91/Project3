@@ -361,7 +361,7 @@ jobs:
             mv dist.zip ../.circleci/ansible/roles/deploy/files/
             pwd
             echo [web] > inventory.txt
-            echo 54.145.133.39 >> inventory.txt
+            echo 3.110.158.23 >> inventory.txt
             ansible-playbook -i inventory.txt ../.circleci/ansible/deploy-backend.yml
             echo "Done"  
 
