@@ -355,14 +355,13 @@ jobs:
             cd backend
             npm i
             npm run build
+            mv node_modules dist
             zip -r dist.zip dist
-            mkdir -p .circleci/.ansible/roles/deploy/files/
-            mv dist.zip .circleci/.ansible/roles/deploy/files/
+            mkdir -p .circleci/ansible/roles/deploy/files/
+            mv dist.zip .circleci/ansible/roles/deploy/files/
             pwd
-            cd ..
-            ls -lRta .circleci
             echo 54.145.133.39 > inventory.txt
-            ansible-playbook -i inventory.txt .circleci/.ansible/deploy-backend.yml
+            ansible-playbook -i inventory.txt ../.circleci/ansible/deploy-backend.yml
             echo "Done"  
 
   smoke-test:
