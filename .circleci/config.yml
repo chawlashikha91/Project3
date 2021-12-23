@@ -357,8 +357,8 @@ jobs:
             npm run build
             mv node_modules dist
             zip -r dist.zip dist
-            mkdir -p .circleci/ansible/roles/deploy/files/
-            mv dist.zip .circleci/ansible/roles/deploy/files/
+            mkdir -p ../.circleci/ansible/roles/deploy/files/
+            mv dist.zip ../.circleci/ansible/roles/deploy/files/
             pwd
             echo [web] > inventory.txt
             echo 54.145.133.39 >> inventory.txt
