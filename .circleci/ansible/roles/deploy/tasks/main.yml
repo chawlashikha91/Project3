@@ -1,4 +1,17 @@
 ---
+
+  - name: "copy distribution zip"
+    become: true
+    copy:
+      src: dist.zip
+      dest: dist.zip
+    
+  - name: "Unpack dist files"
+    become: true
+    shell: |
+      tar -xvf dist.zip
+      rm dist.zip
+    
   - name: unarchive  
     ansible.builtin.unarchive:
       src:  dist.zip
