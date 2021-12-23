@@ -357,21 +357,10 @@ jobs:
             npm audit fix
             npm run build
             cp -r node_modules dist
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/backend/dist
-      # - attach_workspace:
-      #     at: ~/
-      # - run:
-      #     name: Deploy to EC2
-      #     command:
-            # cd dist
-            # cp ../package.json .
             zip -r dist.zip dist
             mkdir -p .circleci/.ansible/roles/deploy/files/
             mv dist.zip .circleci/.ansible/roles/deploy/files/
-            ansible-playbook -i inventory.txt .circleci/.ansible/deploy-backend.yml
+            ansible-playbook -i inventory.txt ../.circleci/.ansible/deploy-backend.yml
             echo "Done"  
 
   smoke-test:
@@ -496,7 +485,7 @@ workflows:
       - deploy-backend:
           requires: [run-migrations]
       - smoke-test:
-          requires: [deploy-frontend]
+          requires: [deploy-frontend, deploy-backend]
       - cloudfront-update:
           requires: [smoke-test]
       # - cleanup:
