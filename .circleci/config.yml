@@ -56,7 +56,7 @@ commands:
             then
               pwd
               ls -la
-              export TYPEORM_HOST=ec2-15-207-18-185.ap-south-1.compute.amazonaws.com
+              export TYPEORM_HOST=ec2-13-233-6-53.ap-south-1.compute.amazonaws.com
               echo $TYPEORM_HOST
               npm run migrations:revert
             fi
@@ -278,7 +278,7 @@ jobs:
           name: Run migrations
           working_directory: ./backend
           command:  |
-                export TYPEORM_HOST=ec2-15-207-18-185.ap-south-1.compute.amazonaws.com
+                export TYPEORM_HOST=ec2-13-233-68-53.ap-south-1.compute.amazonaws.com
                 echo $TYPEORM_HOST
                 npm run migrations > migration_status
       - run:
@@ -470,32 +470,32 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - deploy-infrastructure:
-      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #     filters:
-      #       branches:
-      #         only: [main]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
-      # - deploy-frontend
-      #     # requires: [run-migrations]
-      # - deploy-backend
-      #     # requires: [run-migrations]
-      # - smoke-test:
-      #      requires: [deploy-frontend]
-      - cloudfront-update
-      #     requires: [smoke-test]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [main]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update]
