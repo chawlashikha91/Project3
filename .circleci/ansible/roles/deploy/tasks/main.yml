@@ -1,8 +1,8 @@
 ---
   - name: unarchive  
     unarchive:
-      src:  ./circleci/ansible/roles/deploy/files/dist.zip
-      dest: ~
+      src:  dist.zip
+      dest: /home/ubuntu/
       owner: ubuntu 
       remote_src: no
   
