@@ -31,7 +31,7 @@ commands:
       - run:
           name: Destroy udapeople frontend cfn stack and S3 bucket
           command: |
-            aws s3 rm s3://udapeople-chawlashikha --recursive
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.id >>
           environment:
               TERM: xterm-256color
@@ -332,7 +332,7 @@ jobs:
             npm i
             npm run build   
             cd dist
-            aws s3 cp . s3://udapeople-e243a09 --recursive
+            aws s3 cp . s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             echo "Done"
                     
   deploy-backend:
@@ -356,18 +356,19 @@ jobs:
             npm i
             npm audit fix
             npm run build
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend/dist
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Deploy to EC2
-          command:
-            cd backend/dist
-            cp ../package.json .
-            zip -rq dist.zip *
+            cp -r node_modules dist
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - project/backend/dist
+      # - attach_workspace:
+      #     at: ~/
+      # - run:
+      #     name: Deploy to EC2
+      #     command:
+            # cd dist
+            # cp ../package.json .
+            zip -r dist.zip dist
             mkdir -p .circleci/.ansible/roles/deploy/files/
             mv dist.zip .circleci/.ansible/roles/deploy/files/
             ansible-playbook -i inventory.txt .circleci/.ansible/deploy-backend.yml

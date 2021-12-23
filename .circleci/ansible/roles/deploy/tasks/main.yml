@@ -1,0 +1,39 @@
+
+unarchive:
+      src:  ./circleci/.ansible/roles/deploy/files/dist.zip
+      dest: ~
+      owner: ubuntu 
+      remote_src: no
+  
+  - name: "install dependencies Nodejs NPM"
+    become: yes
+    apt:
+      name: ["nodejs", "npm"]
+      state: present
+      update_cache: yes    
+
+  - name: "update apt packages."
+    become: yes
+    become_method: sudo
+    apt:
+      update_cache: yes
+ 
+  - name: "pm2 install global using NPM"
+    become: yes
+    shell: |
+          cd /home/ubuntu/
+          npm install pm2 -g
+          
+  - name: "Start Backend App"
+    become: yes
+    become_user: ubuntu  
+    shell: | 
+      export TYPEORM_CONNECTION=postgres
+      export TYPEORM_ENTITIES=./modules/domain/**/*.entity.js
+      export TYPEORM_HOST=ec2-23-233-68-53.ap-south-1.compute.amazonaws.com
+      export TYPEORM_PORT=5432
+      export TYPEORM_USERNAME=glee
+      export TYPEORM_PASSWORD=glee
+      export TYPEORM_DATABASE=glee
+      pm2 start main.js
+    ignore_errors: true
