@@ -1,6 +1,7 @@
-
-unarchive:
-      src:  ./circleci/.ansible/roles/deploy/files/dist.zip
+---
+  - name: unarchive  
+    unarchive:
+      src:  ./circleci/ansible/roles/deploy/files/dist.zip
       dest: ~
       owner: ubuntu 
       remote_src: no
@@ -21,8 +22,8 @@ unarchive:
   - name: "pm2 install global using NPM"
     become: yes
     shell: |
-          cd /home/ubuntu/
-          npm install pm2 -g
+      cd /home/ubuntu/
+      npm install pm2 -g
           
   - name: "Start Backend App"
     become: yes
