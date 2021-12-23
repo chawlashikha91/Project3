@@ -13,13 +13,7 @@
       name: zip
       state: present
   
-  - name: Unarchive the zip
-    ansible.builtin.unarchive:
-      src: dist.zip
-      dest: /home/ubuntu
-      remote_src: no
-    
-  - name: unarchive  
+  - name: unarchive the dist.zip
     ansible.builtin.unarchive:
       src:  dist.zip
       dest: /home/ubuntu/
