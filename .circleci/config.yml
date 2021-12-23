@@ -359,9 +359,13 @@ jobs:
             mkdir -p .circleci/.ansible/roles/deploy/files/
             mv dist.zip .circleci/.ansible/roles/deploy/files/
             pwd
+<<<<<<< HEAD
             ls -lrt
             echo 54.145.133.39 > inventory.txt
             ansible-playbook -i inventory.txt ~/project/.circleci/.ansible/deploy-backend.yml
+=======
+            ls-lrt
+>>>>>>> 68437cf1dad4a406438f1f52b02bd7eb4088cf0a
             echo "Done"  
 
   smoke-test:
