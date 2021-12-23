@@ -1,6 +1,6 @@
 ---
   - name: unarchive  
-    unarchive:
+    ansible.builtin.unarchive:
       src:  dist.zip
       dest: /home/ubuntu/
       owner: ubuntu 
