@@ -5,12 +5,19 @@
     copy:
       src: dist.zip
       dest: dist.zip
-    
-  - name: "Unpack dist files"
-    become: true
-    shell: |
-      tar -xvf dist.zip
-      rm dist.zip
+  
+  - name: "Install zip"
+    become: yes
+    apt:
+      update_cache: yes
+      name: zip
+      state: present
+  
+  - name: Unarchive the zip
+    ansible.builtin.unarchive:
+      src: dist.zip
+      dest: dist
+      remote_src: no
     
   - name: unarchive  
     ansible.builtin.unarchive:
