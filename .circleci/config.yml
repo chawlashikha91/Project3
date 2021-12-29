@@ -187,31 +187,31 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      -  checkout
+      -   checkout
       - run:
           name: Install Dependencies
           command: yum install -y tar gzip
-      -run:
+      - run:
           name: Check connection
           command: aws s3 ls
       - run:
           name: Ensure back-end infrastructure exists
           working_directory: ./.circleci/files
           command: |
-            aws cloudformation deploy \ 
-              --template-file backend.yml \
-              --tags project=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
-              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+                aws cloudformation deploy \ 
+                --template-file backend.yml \
+                --tags project=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+                --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
       - run:
           name: Ensure front-end infrastructure exist
           working_directory: ./.circleci/files
           command: |
-            aws cloudformation deploy \
-              --template-file frontend.yml \
-              --tags project=udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
-              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+                aws cloudformation deploy \
+                --template-file frontend.yml \
+                --tags project=udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
+                --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
       - run:
           name: Add backend ip to ansible inventory
           working_directory: ./.circleci/ansible
