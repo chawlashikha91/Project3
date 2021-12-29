@@ -235,7 +235,7 @@ jobs:
     steps:
       -  checkout
       - add_ssh_keys:
-          fingerprints: ["2a:55:a0:47:be:47:46:f9:cb:9c:a3:03:6e:33:9e:3b"]
+          fingerprints: ["c7:6f:80:5f:2d:2d:78:73:58:8a:3f:14:09:ec:ee:1a"]
       - attach_workspace:
           at: .
       - run:
@@ -341,7 +341,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["2a:55:a0:47:be:47:46:f9:cb:9c:a3:03:6e:33:9e:3b"]
+          fingerprints: ["c7:6f:80:5f:2d:2d:78:73:58:8a:3f:14:09:ec:ee:1a"]
       - attach_workspace:
           at: .
       - run:
@@ -461,29 +461,29 @@ jobs:
 workflows:
   default:
     jobs:   
-      - build-backend
-      - build-frontend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [main]
+      # - build-backend
+      # - build-frontend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      - deploy-infrastructure
+          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          # filters:
+          #   branches:
+          #     only: [main]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-frontend, deploy-backend]
       # - cloudfront-update:
