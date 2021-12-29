@@ -70,9 +70,9 @@
     become: yes
     become_user: ubuntu  
     shell: | 
-      export ENVIRONMENT=production
-      export NODE_ENV=production
-      export TYPEORM_CONNECTION=postgres
+      export ENVIRONMENT = production
+      export NODE_ENV = production
+      export TYPEORM_CONNECTION = postgres
       export TYPEORM_ENTITIES=./modules/domain/**/*.entity.js
       export TYPEORM_HOST=ec2-3-7-68-126.ap-south-1.compute.amazonaws.com
       export TYPEORM_PORT=5432
