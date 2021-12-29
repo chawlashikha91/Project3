@@ -65,7 +65,7 @@
       # export TYPEORM_DATABASE=glee
       # cd dist
       # pm2 start main.js
-      
+
   - name: "Start Backend App"
     become: yes
     become_user: ubuntu  
@@ -73,7 +73,7 @@
       cd /home/ubuntu/dist
       pm2 list
       pm2 stop default
-      pm2 start main.js -n 'udapeople-backend'
+      pm2 start main.js -n 'ec2-3-7-68-126.ap-south-1.compute.amazonaws.com'
       pm2 status all
       netstart -tulpn
       curl localhost:3030/api/status
