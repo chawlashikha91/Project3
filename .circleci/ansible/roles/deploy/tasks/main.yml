@@ -70,10 +70,19 @@
     become: yes
     become_user: ubuntu  
     shell: | 
+      export ENVIRONMENT=production
+      export NODE_ENV=production
+      export TYPEORM_CONNECTION=postgres
+      export TYPEORM_ENTITIES=./modules/domain/**/*.entity.js
+      export TYPEORM_HOST=ec2-13-233-68-53.ap-south-1.compute.amazonaws.com
+      export TYPEORM_PORT=5432
+      export TYPEORM_USERNAME=glee
+      export TYPEORM_PASSWORD=glee
+      export TYPEORM_DATABASE=glee
       cd /home/ubuntu/dist
       pm2 list
       pm2 stop default
-      pm2 start main.js -n 'ec2-3-7-68-126.ap-south-1.compute.amazonaws.com'
+      pm2 start main.js
       pm2 status all
       netstart -tulpn
       curl localhost:3030/api/status
