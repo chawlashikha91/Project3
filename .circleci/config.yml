@@ -291,12 +291,14 @@ jobs:
                 echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "development.env"
                 echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "development.env"
                 echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "development.env"
-                npm run migrations > migration_status
+                echo NODE_PATH=/home/ubuntu/backend/node_modules >> "development.env"
+                npm run migrations > migration_status.txt
+                cat migration_status.txt
       - run:
           name: Send migration results to memstash
           working_directory: ./backend
           command: |
-            if grep -q "has been executed successfully" migration_status
+            if grep -q "has been executed successfully" migration_status.txt
             then
               echo "DB migration was successful, will update memstash..."
               curl  https://kvdb.io/NqK6G9tq8Jq7kMdMXacYZd/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7} -d "success" -k
@@ -367,25 +369,34 @@ jobs:
             npm run build
             mv node_modules dist
             echo ENVIRONMENT=production >> "dist/.env"
-                echo NODE_ENV=production >> "dist/.env"
-                echo VERSION=1 >> "dist/.env"
-                echo TYPEORM_CONNECTION=postgress >> "dist/.env"
-                echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "dist/.env"
-                echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.js >> "dist/.env"
-                echo TYPEORM_MIGRATIONS=./src/migrations/*.js >> "dist/.env"
-                echo TYPEORM_HOST=$TYPEORM_HOST >> "dist/.env"
-                echo TYPEORM_PORT=$TYPEORM_PORT >> "dist/.env"
-                echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "dist/.env"
-                echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "dist/.env"
-                echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "dist/.env"
-            zip -r dist.zip dist
-            mkdir -p ../.circleci/ansible/roles/deploy/files/
-            mv dist.zip ../.circleci/ansible/roles/deploy/files/
-            pwd
-            echo [web] > inventory.txt
-            echo 3.110.158.23 >> inventory.txt
-            ansible-playbook -i inventory.txt ../.circleci/ansible/deploy-backend.yml
-            echo "Done"  
+            echo NODE_ENV=production >> "dist/.env"
+            echo VERSION=1 >> "dist/.env"
+            echo TYPEORM_CONNECTION=postgress >> "dist/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "dist/.env"
+            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.js >> "dist/.env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.js >> "dist/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "dist/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "dist/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "dist/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "dist/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "dist/.env"
+            echo NODE_PATH=/home/ubuntu/dist/node_modules >> "dist/.env"
+            tar -czvf artefacts.tar.gz ./dist
+            cd ..
+            cd .circle/ansible
+            echo "Contents of the inventory.txt file is -----"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+
+#
+            # zip -r dist.zip dist
+            # mkdir -p ../.circleci/ansible/roles/deploy/files/
+            # mv dist.zip ../.circleci/ansible/roles/deploy/files/
+            # pwd
+            # echo [web] > inventory.txt
+            # echo 3.110.158.23 >> inventory.txt
+            # ansible-playbook -i inventory.txt ../.circleci/ansible/deploy-backend.yml
+            # echo "Done"  
 
   smoke-test:
     docker:
