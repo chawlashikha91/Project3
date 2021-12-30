@@ -58,6 +58,8 @@ commands:
               ls -la
               export TYPEORM_HOST=ec2-3-7-68-126.ap-south-1.compute.amazonaws.com
               echo $TYPEORM_HOST
+              npm cache clean --force 
+              npm install
               npm run migrations:revert
             fi
           when: << parameters.when >>
