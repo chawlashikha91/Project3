@@ -58,8 +58,6 @@ commands:
               ls -la
               export TYPEORM_HOST=ec2-3-7-68-126.ap-south-1.compute.amazonaws.com
               echo $TYPEORM_HOST
-              npm cache clean --force 
-              npm install
               npm run migrations:revert
             fi
           when: << parameters.when >>
@@ -437,7 +435,7 @@ jobs:
           command: |
             if curl -s http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.us-east-1.amazonaws.com/ | grep "Welcome"
             then
-            return 1
+            return 0
             else
             return 1
             fi         
