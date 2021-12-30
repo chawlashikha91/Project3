@@ -579,7 +579,7 @@ workflows:
       #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
-      # - deploy-frontend:
+      - deploy-frontend
       #     requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
@@ -587,7 +587,8 @@ workflows:
       #     requires: [deploy-frontend, deploy-backend]
       # - deploy-cloudfront-and-cleanup:
       #     requires: [smoke-test]
-      - cloudfront-update
+      - cloudfront-update:
+          required: [deploy-frontend]
           # requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
