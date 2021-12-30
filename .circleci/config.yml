@@ -308,12 +308,12 @@ jobs:
               curl  https://kvdb.io/NqK6G9tq8Jq7kMdMXacYZd/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7} -d "failure" -k
             fi
             echo "WorkflowID=${CIRCLE_WORKFLOW_ID:0:7}"
-      - destroy-environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-          when: on_fail
-      - revert-migrations:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
-          when: on_success
+      # - destroy-environment:
+      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #     when: on_fail
+      # - revert-migrations:
+      #     id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #     when: on_success
 
   deploy-frontend:
     executor: node
