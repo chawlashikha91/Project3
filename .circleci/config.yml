@@ -411,7 +411,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update curl npm
+            apk add --update curl nodejs npm ansible zip
             pip install awscli
       - run:
           name: Backend smoke test.
