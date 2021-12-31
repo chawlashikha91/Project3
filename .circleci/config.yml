@@ -273,7 +273,6 @@ jobs:
           working_directory: ./backend
           command:  |
                 npm install
-
       - run:
           name: Run migrations
           working_directory: ./backend
@@ -285,8 +284,8 @@ jobs:
                 echo VERSION=1 >> "development.env"
                 echo TYPEORM_CONNECTION=postgres >> "development.env"
                 echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "development.env"
-                echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.js >> "development.env"
-                echo TYPEORM_MIGRATIONS=./src/migrations/*.js >> "development.env"
+                echo TYPEORM_ENTITIES=./modules/domain/**/*.entity.js >> "development.env"
+                echo TYPEORM_MIGRATIONS=./migrations/*.js >> "development.env"
                 echo TYPEORM_HOST=$TYPEORM_HOST >> "development.env"
                 echo TYPEORM_PORT=$TYPEORM_PORT >> "development.env"
                 echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "development.env"
