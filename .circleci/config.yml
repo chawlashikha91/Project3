@@ -321,7 +321,7 @@ jobs:
           command: |
             BACKEND_GET_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicDnsName' \
-              --filters "Name=tag:project,Values=udapeople-backend-47089e1" \
+              --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text)
             export API_URL="http://${BACKEND_GET_IP}:3030"
             echo "${API_URL}"
@@ -335,7 +335,7 @@ jobs:
             npm i
             npm run build   
             cd dist
-            aws s3 sync . s3://udapeople-47089e1 --delete
+            aws s3 sync . s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --delete
             echo "Done"
                     
   deploy-backend:
@@ -497,7 +497,7 @@ jobs:
             aws cloudformation deploy \
               --template-file cloudfront.yml \
               --stack-name InitialStack \
-              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides WorkflowID="47089e1" \
               --tags project=udapeople
 #      - destroy-environment:
 #          id: ${CIRCLE_WORKFLOW_ID:0:7}
@@ -570,7 +570,7 @@ workflows:
       #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
-      - deploy-frontend
+      # - deploy-frontend
       #     requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
@@ -578,8 +578,8 @@ workflows:
       #     requires: [deploy-frontend, deploy-backend]
       # - deploy-cloudfront-and-cleanup:
       #     requires: [smoke-test]
-      - cloudfront-update:
-          requires: [deploy-frontend]
+      - cloudfront-update
+          # requires: [deploy-frontend]
       # - cleanup:
       #     requires: [cloudfront-update]
       
