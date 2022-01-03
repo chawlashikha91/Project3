@@ -325,12 +325,9 @@ jobs:
             export API_URL="http://${BACKEND_GET_IP}:3030"
             echo "${API_URL}"
             echo API_URL=$API_URL >> "frontend/.env"
-      - run:
-          name: Deploy frontend objects
-          command: |
             cd frontend
-            echo ENVIRONMENT=production  > ".env" 
-            echo NODE_ENV=production > ".env"
+            echo ENVIRONMENT=production  >> ".env" 
+            echo NODE_ENV=production >> ".env"
             cat .env
             npm i
             npm run build   
