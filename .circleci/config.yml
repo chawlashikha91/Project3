@@ -321,7 +321,7 @@ jobs:
           command: |
             BACKEND_GET_IP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicDnsName' \
-              --filters "Name=tag:project,Values=udapeople-backend-47089e1 \
+              --filters "Name=tag:project,Values=udapeople-backend-47089e1" \
               --output text)
             export API_URL="http://${BACKEND_GET_IP}:3030"
             echo "${API_URL}"
