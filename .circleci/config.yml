@@ -327,13 +327,13 @@ jobs:
             echo "${API_URL}"
             echo API_URL=$API_URL >> "frontend/.env"
             cd frontend
-            echo ENVIRONMENT=production  >> ".env" 
-            echo NODE_ENV=production >> ".env"
-            export ENVIRONMENT=production
-            export NODE_ENV=production
+            echo ENVIRONMENT=development  >> ".env" 
+            echo NODE_ENV=development >> ".env"
+            export ENVIRONMENT=development
+            export NODE_ENV=development
             cat .env
             npm i
-            npm run build:prod   
+            npm run build   
             cd dist
             aws s3 sync . s3://udapeople-47089e1 --delete
             echo "Done"
