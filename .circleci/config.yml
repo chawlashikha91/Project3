@@ -315,23 +315,28 @@ jobs:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
+#             BACKEND_GET_IP=$(aws ec2 describe-instances \
+#              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+#              --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+#              --output text)
+#   ${BACKEND_GET_IP}
+# ${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Rebuild frontend with backend API Url
           command: |
-            BACKEND_GET_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --output text)
-            export API_URL="http://${BACKEND_GET_IP}:3030"
+            export API_URL="http://44.201.135.176:3030"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
           command: |
             cd frontend
+            echo ENVIRONMENT=production  > ".env" 
+            echo NODE_ENV=production > ".env"
+            cat .env
             npm i
             npm run build   
             cd dist
-            aws s3 cp . s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp . s3://udapeople-8c5a553 --recursive
             echo "Done"
                     
   deploy-backend:
@@ -547,35 +552,35 @@ jobs:
 workflows:
   default:
     jobs:   
-      - build-backend
-      - build-frontend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [main]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-frontend, deploy-backend]
+      # - build-backend
+      # - build-frontend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #     filters:
+      #       branches:
+      #         only: [main]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      - deploy-frontend
+          # requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+      # - smoke-test:
+      #     requires: [deploy-frontend, deploy-backend]
       # - deploy-cloudfront-and-cleanup:
       #     requires: [smoke-test]
       - cloudfront-update:
-          requires: [smoke-test]
+          requires: [deploy-frontend]
       # - cleanup:
       #     requires: [cloudfront-update]
       
