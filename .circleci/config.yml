@@ -329,11 +329,13 @@ jobs:
             cd frontend
             echo ENVIRONMENT=production  >> ".env" 
             echo NODE_ENV=production >> ".env"
+            export ENVIRONMENT=production
+            export NODE_ENV=production
             cat .env
             npm i
             npm run build   
             cd dist
-            aws s3 cp . s3://udapeople-47089e1 --recursive
+            aws s3 sync . s3://udapeople-47089e1 --delete
             echo "Done"
                     
   deploy-backend:

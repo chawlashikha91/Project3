@@ -152,7 +152,7 @@ module.exports = {
   plugins: [
     new Dotenv(),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
+      NODE_ENV: process.env.NODE_ENV, // use 'development' unless process.env.NODE_ENV is defined
       DEBUG: false,
       API_URL: process.env.API_URL,
       WP_HELP_EMAIL: 'info@acklenavenue.com',
@@ -167,7 +167,7 @@ module.exports = {
       hash: true,
       template: 'assets/index.ejs',
       LOGGLY_TOKEN: process.env.LOGGLY_TOKEN,
-      TITLE: process.env.TITLE || 'Welcome',
+      TITLE: process.env.TITLE || 'Welcome' || process.env.API_URL || process.env.NODE_ENV ,
       API_URL: process.env.API_URL,
       WP_HELP_EMAIL: process.env.WP_HELP_EMAIL,
     }),
