@@ -1,0 +1,5 @@
+URL01 – Git hub - https://github.com/chawlashikha91/Project3
+URL02 - http://udapeople-45983c8.s3-website-us-east-1.amazonaws.com/#/employees
+URL03- http://d33nm60931ux1f.cloudfront.net
+URL04 - http:// 3.83.110.155:3030/api/status
+URL05 - http://ec2-3-95-19-82.compute-1.amazonaws.com:9090/targets
